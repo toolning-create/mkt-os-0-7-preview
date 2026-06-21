@@ -22988,9 +22988,18 @@ body {
     <div id="app"></div>
     <script>
 (() => {
+function __showMktOsError(error) {
+  console.error(error);
+  const root = document.querySelector('#app');
+  if (root) {
+    const message = String(error && (error.stack || error.message || error)).replace(/[&<>]/g, function(char) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[char]; });
+    root.innerHTML = '<main style="font-family: system-ui, sans-serif; padding: 40px; color: #111827;"><h1>MKT OS failed to load</h1><p style="max-width: 720px; color: #4b5563;">The static preview hit a runtime error. Please send this page back to Codex with the browser console error.</p><pre style="white-space: pre-wrap; background: #f3f4f6; padding: 16px; border-radius: 8px;">' + message + '</pre></main>';
+  }
+}
 try {
 
 /* src/mocks/campaignMemoryMock.js */
+const __m_src_mocks_campaignMemoryMock_js = (() => {
 const lifecycleActions = [
   { id: "claim", label: "认领", afterLabel: "已认领", tone: "primary" },
   { id: "execute", label: "标记执行", afterLabel: "执行中", tone: "secondary" },
@@ -25465,9 +25474,12 @@ const mktOsHome = {
   },
 };
 
+return { mktOsHome };
+})();
 
 
 /* src/components/CampaignContextPanel.js */
+const __m_src_components_CampaignContextPanel_js = (() => {
 function escapeText(value) {
   return String(value || "")
     .trim()
@@ -26136,9 +26148,12 @@ function renderCampaignContextPanel(data, selectedCampaign, selectedKnowledge, c
   `;
 }
 
+return { renderCampaignContextPanel };
+})();
 
 
 /* src/components/CampaignKnowledgeTree.js */
+const __m_src_components_CampaignKnowledgeTree_js = (() => {
 function escapeText(value) {
   return String(value || "")
     .trim()
@@ -26461,9 +26476,12 @@ function renderCampaignKnowledgeTree(data, state, selectedCampaignId) {
   `;
 }
 
+return { renderCampaignKnowledgeTree };
+})();
 
 
 /* src/components/CampaignMemoryLedger.js */
+const __m_src_components_CampaignMemoryLedger_js = (() => {
 function escapeText(value) {
   return String(value || "")
     .trim()
@@ -27327,9 +27345,12 @@ function renderCampaignMemoryLedger(data, selectedCampaign, selectedKnowledge, s
   `;
 }
 
+return { renderCampaignMemoryLedger };
+})();
 
 
 /* src/components/CreateCampaignModal.js */
+const __m_src_components_CreateCampaignModal_js = (() => {
 function renderOptions(options, selectedValue = "") {
   return options
     .filter((option) => !option.startsWith("全部"))
@@ -27586,9 +27607,12 @@ function renderCreateCampaignModal(data, state) {
   `;
 }
 
+return { renderCreateCampaignModal };
+})();
 
 
 /* src/components/OsSidebar.js */
+const __m_src_components_OsSidebar_js = (() => {
 function shortLabel(item) {
   return item.shortLabel || item.label.slice(0, 1);
 }
@@ -27668,9 +27692,12 @@ function renderOsSidebar(navigation, activeNavId, collapsed, userProfile) {
   `;
 }
 
+return { renderOsSidebar };
+})();
 
 
 /* src/components/WorkspacePages.js */
+const __m_src_components_WorkspacePages_js = (() => {
 const ACTION_STAGE_LABELS = ["Awareness", "Consideration", "Conversion", "Loyalty"];
 
 const DASHBOARD_LENSES = [
@@ -30575,9 +30602,12 @@ function renderWorkspacePage(data, state) {
   return renderWorkspaceTodos(data, state);
 }
 
+return { renderWorkspacePage };
+})();
 
 
 /* src/lib/copyEditModel.js */
+const __m_src_lib_copyEditModel_js = (() => {
 const COPY_EDIT_SCHEMA_VERSION = 1;
 const COPY_EDIT_SOURCE_VERSION = "v0.6.37";
 const COPY_EDIT_ROOT = "mktOsHome";
@@ -30784,9 +30814,19 @@ function findUnsafeCopyEditPaths(payload = {}) {
     .map(([path]) => path);
 }
 
+return { COPY_EDIT_SCHEMA_VERSION, COPY_EDIT_SOURCE_VERSION, COPY_EDIT_ROOT, collectEditableCopyEntries, isSafeCopyPath, setCopyEditValue, applyCopyEdits, normaliseCopyEditsPayload, findUnsafeCopyEditPaths };
+})();
 
 
 /* src/App.js */
+const { mktOsHome } = __m_src_mocks_campaignMemoryMock_js;
+const { renderCampaignContextPanel } = __m_src_components_CampaignContextPanel_js;
+const { renderCampaignKnowledgeTree } = __m_src_components_CampaignKnowledgeTree_js;
+const { renderCampaignMemoryLedger } = __m_src_components_CampaignMemoryLedger_js;
+const { renderCreateCampaignModal } = __m_src_components_CreateCampaignModal_js;
+const { renderOsSidebar } = __m_src_components_OsSidebar_js;
+const { renderWorkspacePage } = __m_src_components_WorkspacePages_js;
+const { applyCopyEdits, collectEditableCopyEntries, COPY_EDIT_SCHEMA_VERSION, COPY_EDIT_SOURCE_VERSION, normaliseCopyEditsPayload, setCopyEditValue } = __m_src_lib_copyEditModel_js;
 
 const COPY_EDIT_ENDPOINT = "/__mkt-os-copy-edits";
 
@@ -33752,15 +33792,11 @@ async function bootstrap() {
   bindClickEvents();
 }
 
-bootstrap();
+bootstrap().catch(__showMktOsError);
 
 
 } catch (error) {
-  console.error(error);
-  const root = document.querySelector('#app');
-  if (root) {
-    root.innerHTML = '<main style="font-family: system-ui, sans-serif; padding: 40px; color: #111827;"><h1>MKT OS failed to load</h1><p style="max-width: 720px; color: #4b5563;">The static preview hit a runtime error. Please send this page back to Codex with the browser console error.</p><pre style="white-space: pre-wrap; background: #f3f4f6; padding: 16px; border-radius: 8px;">' + String(error && (error.stack || error.message || error)).replace(/[&<>]/g, function(char) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[char]; }) + '</pre></main>';
-  }
+  __showMktOsError(error);
 }
 })();
     </script>
